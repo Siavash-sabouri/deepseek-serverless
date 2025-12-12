@@ -1,8 +1,8 @@
-FROM ghcr.io/abetlen/llama-cpp-python:latest
+FROM python:3.10-slim
+
+RUN apt update && apt install -y git curl && pip install --no-cache-dir llama-cpp-python runpod
 
 COPY . /app
 WORKDIR /app
 
-RUN pip install --upgrade llama-cpp-python
-
-CMD ["handler.handler"]
+CMD ["python3", "-m", "runpod"]

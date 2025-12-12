@@ -2,7 +2,7 @@ import os
 import requests
 from llama_cpp import Llama
 
-MODEL_PATH = "./deepseek.gguf"
+MODEL_PATH = "deepseek.gguf"
 MODEL_URL = "https://huggingface.co/TheBloke/deepseek-coder-6.7B-instruct-GGUF/resolve/main/deepseek-coder-6.7b-instruct.Q4_K_M.gguf"
 
 # Download model if not exists
@@ -23,8 +23,7 @@ llm = Llama(
     n_gpu_layers=35
 )
 
-# Run inference
-def handler(event):
-    prompt = event.get("input", "")
+def run(job):
+    prompt = job["input"]["prompt"]
     output = llm(prompt)
     return {"output": output["choices"][0]["text"]}
