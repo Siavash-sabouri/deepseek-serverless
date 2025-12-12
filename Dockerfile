@@ -1,10 +1,8 @@
-FROM ghcr.io/ggerganov/llama.cpp:latest
-
-RUN apt update && apt install -y python3-pip
+FROM ghcr.io/abetlen/llama-cpp-python:latest
 
 COPY . /app
 WORKDIR /app
 
-RUN pip3 install --upgrade llama-cpp-python
+RUN pip install --upgrade llama-cpp-python
 
 CMD ["handler.handler"]
