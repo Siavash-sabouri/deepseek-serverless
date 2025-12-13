@@ -1,8 +1,14 @@
-FROM python:3.10-slim
+FROM python:3.10
 
-RUN apt update && apt install -y git curl && pip install --no-cache-dir llama-cpp-python runpod
-
-COPY . /app
 WORKDIR /app
 
-CMD ["python3", "-m", "runpod"]
+RUN apt update && apt install -y \
+    git \
+    curl \
+    build-essential \
+    cmake \
+    && pip install --no-cache-dir runpod llama-cpp-python
+
+COPY . /app
+
+CMD ["python3", "-u", "handler.py"]
