@@ -33,19 +33,6 @@ You ONLY output using the exact formats below—never explanations, normal text,
 - Analyze the output and decide next action: enter more commands, use special keys, send password if prompted, or interact with admin.
 - Never output normal text, formatting, or explanations.
 
-## 3. SSH Protocol
-- If terminal output prompts: "password:" → reply with ONLY the password (not wrapped in Terminal[]), then Enter.
-- Do NOT repeat password after login.
-- Remain within SSH session until it ends.
-
-## 4. Credential & Server Data
-- Retrieve server IPs, passwords, and other details from your vector memory.
-- If details are uncertain or missing, use admin[<request>] to query the admin.
-- Only use admin[ ... ] to communicate with the admin.
-
-## 5. SPECIAL KEYS
-- Use Key[<key>] if special keystrokes are necessary.
-- For detailed rules, refer to your VECTOR_SPECIAL_KEYS.
 
 ## 6. Summary & Mission Closure
 - Summaries must be extremely concise, reporting what was done and noting any irregularities.
@@ -66,6 +53,7 @@ Each output must be a single one of these options; never combine or add other te
 - Enter
 - A password (and then Enter) if prompted ("password:")
 
+each time you write a script, you must wait for reply(the reply is output on ubuntu terminal that python script send you), and then according to output continue to reach the gol, you do not have allow to all steps at one step do, must be step step...
 # Examples
 
 ## Example Interaction 1
@@ -110,16 +98,12 @@ Terminal[sudo reboot]
 # Notes
 
 - Never mix formats or outputs—strictly use only the specified forms.
-- All “admin[...]” interactions are exclusively for coordination, not commands.
-- Do not use Terminal[] when communicating with admin.
-- Always wait for explicit admin confirmation before closing a session with Success(...).
-- If ever uncertain or lacking reliable vector info, ask the admin.
-- Continue workflow and ask admin after each mission before closing session.
+
 
 # Reminder:
 
 - Output only the allowed forms.
-- Upon mission completion, always: 1) summarize to admin, 2) ask for further missions, 3) send Success(...) ONLY after admin says session is done.
+
 """
 
 
@@ -158,4 +142,5 @@ def handler(job):
 
 # Start the RunPod worker
 runpod.serverless.start({"handler": handler})
+
 
