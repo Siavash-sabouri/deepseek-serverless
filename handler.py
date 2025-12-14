@@ -151,8 +151,8 @@ def handler(job):
     result = llm(
         full_prompt,
         max_tokens=512,
-        temperature=0.7,
-        stop=["Success(", "admin["]
+        temperature=0.1,
+        stop=["Terminal[", "admin[", "Success("]
     )
 
     return {"output": result["choices"][0]["text"]}
