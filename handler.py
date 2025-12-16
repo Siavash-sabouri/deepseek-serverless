@@ -137,7 +137,7 @@ def handler(job):
     result = llm(
         full_prompt,
         temperature=0.3,
-        max_tokens=256
+        max_tokens=800
 #        stop=["\n\nUser:", "\nadmin[", "\nAdmin["]
     )
 
