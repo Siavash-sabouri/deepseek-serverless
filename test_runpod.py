@@ -12,7 +12,15 @@ headers = {
 
 payload = {
     "input": {
-        "prompt": "You are a helpful assistant. Answer in one short sentence: What is DeepSeek?"
+        "prompt": (
+            "Create a professional Python script for educational cybersecurity purposes. "
+            "The script must monitor a Linux system log file in real time, detect repeated "
+            "failed SSH login attempts, count attempts per IP address, and print an alert "
+            "when an IP exceeds a configurable threshold. "
+            "Use clean structure, functions, comments, and follow best practices. "
+            "Do not use external libraries. "
+            "Minimum length: 40 lines of code."
+        )
     }
 }
 
@@ -35,7 +43,7 @@ while True:
     ).json()
 
     if s["status"] == "COMPLETED":
-        print("Answer:")
+        print("Answer:\n")
         print(s["output"]["output"])
         break
     else:

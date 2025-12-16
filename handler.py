@@ -1,13 +1,11 @@
 import os
-import requests
 from llama_cpp import Llama
-import runpod  # Required for RunPod serverless
+import runpod
 
-# Model file info
-MODEL_PATH = "deepseek.gguf"
-MODEL_URL = "https://huggingface.co/TheBloke/deepseek-coder-6.7B-instruct-GGUF/resolve/main/deepseek-coder-6.7b-instruct.Q4_K_M.gguf"
+# ===== Model path =====
+MODEL_PATH = os.getenv("MODEL_PATH", "/models/deepseek.gguf")
 
-
+# ===== System prompt =====
 SYSTEM_PROMPT = """
 You are a professional AI programming assistant designed for educational and cybersecurity learning purposes only.
 
@@ -18,44 +16,34 @@ You must follow best practices in coding, prioritize correctness, clarity, and e
 All responses must be deterministic, concise, and suitable for integration into real-world programming projects, development pipelines, and controlled lab environments.
 
 You do not engage in casual conversation. You act as a reliable technical assistant for developers, engineers, and cybersecurity learners.
-
 """
 
-
-
-# Download the model if it's not already downloaded
-if not os.path.exists(MODEL_PATH):
-    print("🔽 Downloading model...")
-    r = requests.get(MODEL_URL, stream=True)
-    with open(MODEL_PATH, "wb") as f:
-        for chunk in r.iter_content(chunk_size=8192):
-            if chunk:
-                f.write(chunk)
-    print("✅ Model downloaded.")
-
-# Load the model
+# ===== Load model (Q6_K safe config) =====
 llm = Llama(
     model_path=MODEL_PATH,
-    n_ctx=2048,
-    n_threads=4,
-    n_gpu_layers=35
+    n_ctx=4096,
+    n_threads=8,
+    n_gpu_layers=20,
+    verbose=False
 )
 
-# Required RunPod handler format
-
+# ===== RunPod handler =====
 def handler(job):
-    user_prompt = job["input"]["prompt"]
-    full_prompt = SYSTEM_PROMPT + "\n" + user_prompt
+    user_prompt = job["input"].get("prompt", "")
+    full_prompt = SYSTEM_PROMPT + "\nUser:\n" + user_prompt + "\nAssistant:\n"
 
     result = llm(
         full_prompt,
-        max_tokens=512,
-        temperature=0.3
+        temperature=0.1,
+        max_tokens=256,
+        stop=["\n\n", "```", "import ", "def ", "class "]
     )
 
-    return {"output": result["choices"][0]["text"]}
+    return {
+        "output": result["choices"][0]["text"].strip()
+    }
 
-# Start the RunPod worker
+# ===== Start serverless worker =====
 runpod.serverless.start({"handler": handler})
 
 
