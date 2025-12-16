@@ -36,6 +36,7 @@ def handler(job):
         full_prompt,
         temperature=0.1,
         max_tokens=256,
+        stop=["\n\nUser:"]
     )
 
     return {
