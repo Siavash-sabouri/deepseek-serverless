@@ -9,10 +9,10 @@ RUN apt update && apt install -y \
     cmake \
     && pip install --no-cache-dir runpod llama-cpp-python
 
-# download Q6_K model
+# download 1.3B Instruct model (faster startup)
 RUN mkdir -p /models && \
     curl -L \
-    https://huggingface.co/TheBloke/deepseek-coder-6.7B-instruct-GGUF/resolve/main/deepseek-coder-6.7b-instruct.Q6_K.gguf \
+    https://huggingface.co/TheBloke/deepseek-coder-1.3B-instruct-GGUF/resolve/main/deepseek-coder-1.3b-instruct.Q4_K_M.gguf \
     -o /models/deepseek.gguf
 
 ENV MODEL_PATH=/models/deepseek.gguf

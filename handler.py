@@ -28,12 +28,12 @@ FAILURE CONDITIONS:
 - Any partial or cut script is an error.
 """
 
-# ===== Load model (Q6_K safe config) =====
+# ===== Load model (1.3B safe config) =====
 llm = Llama(
     model_path=MODEL_PATH,
-    n_ctx=4096,
+    n_ctx=2048,
     n_threads=8,
-    n_gpu_layers=20,
+    n_gpu_layers=10,
     verbose=False
 )
 
@@ -45,12 +45,17 @@ def handler(job):
     result = llm(
         full_prompt,
         temperature=0.3
-#        max_tokens=800
-#        stop=["\n\nUser:", "\nadmin[", "\nAdmin["]
+        # max_tokens=800
+        # stop=["\n\nUser:", "\nadmin[", "\nAdmin["]
     )
 
+    output = result["choices"][0]["text"].strip()
+
+    print("Output length:", len(output))
+    print("Last 50 chars:", repr(output[-50:]))
+
     return {
-        "output": result["choices"][0]["text"].strip()
+        "output": output
     }
 
 # ===== Start serverless worker =====
