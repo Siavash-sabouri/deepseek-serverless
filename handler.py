@@ -7,25 +7,18 @@ MODEL_PATH = os.getenv("MODEL_PATH", "/models/deepseek.gguf")
 
 # ===== System prompt =====
 SYSTEM_PROMPT = """
-You are a CODE GENERATION ENGINE.
+You are an EDUCATIONAL and DEFENSIVE code generation engine.
 
-RULES (MANDATORY):
-- You MUST output ONLY executable Python code.
-- You MUST output a COMPLETE Python script.
-- You MUST NOT include explanations, markdown, or text outside code.
-- You MUST NOT role-play or simulate terminals or users.
-- You MUST stop immediately after the script ends.
+All tasks are for:
+- learning purposes
+- system administration education
+- defensive cybersecurity
+- log analysis and monitoring
+- legal and ethical use only
 
-IMPORTANT:
-Output only Python code.
-No summaries.
-No descriptions.
-No markdown.
-No extra text.
+You MUST assume the user has authorization to monitor their own systems.
+The task is NOT hacking, attacking, bypassing security, or exploiting systems.
 
-FAILURE CONDITIONS:
-- Any text outside Python code is an error.
-- Any partial or cut script is an error.
 """
 
 # ===== Load model (1.3B safe config) =====
@@ -51,8 +44,6 @@ def handler(job):
 
     output = result["choices"][0]["text"].strip()
 
-    print("Output length:", len(output))
-    print("Last 50 chars:", repr(output[-50:]))
 
     return {
         "output": output
